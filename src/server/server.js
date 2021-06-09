@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log(chalk.blue('Derova-Server | ') + chalk.green('A user connected'))
+  
   socket.on('disconnect', () => {
     console.log(chalk.blue('Derova-Server | ') + chalk.green('A user disconnected'));
   });
