@@ -5,6 +5,8 @@
 
 const { Server } = require("socket.io")
 
+const chalk = require('chalk')
+const path = require('path')
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -12,9 +14,16 @@ const server = http.createServer(app);
 const io = new Server(server)
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
+io.on('connection', (socket) => {
+  console.log(chalk.blue('Derova-Server | ') + chalk.green('A user connected'))
+  socket.on('disconnect', () => {
+    console.log(chalk.blue('Derova-Server | ') + chalk.green('A user disconnected'));
+  });
+})
+
 server.listen(3000, () => {
-  console.log('listening on *:3000');
+  console.log(chalk.blue('Derova-Server | ') + chalk.green('Listening on *:3000'));
 });
