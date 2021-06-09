@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (msg) => {
     console.log(chalk.blue('Derrova-Server | Message: ') + msg)
+    io.emit('message', msg)
   })
 })
 
