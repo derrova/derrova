@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  socket.broadcast.emit('Welcome to the server!')
+
   console.log(chalk.blue('Derova-Server | ') + chalk.green('A user connected'))
   
   socket.on('disconnect', () => {
