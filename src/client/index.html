@@ -1,14 +1,48 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Derrova</title>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button onclick=sendButton()>Send</button>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="./styles/main.scss" rel="stylesheet" />
+    <title>Derrova Client</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+    html, body {
+        font-family: 'Open Sans', sans-serif;
+    }
+</style>
+
+<body>
+    <ul id="msglist"></ul>
+    <form id="msgform" action="">
+        <input id="msginput"> <button id="sendButton" type="submit">Send</button>
     </form>
 
-    <script src="renderer.js"></script>
-  </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io()
+        let messages = document.getElementById("msglist")
+        let form = document.getElementById('msgform');
+        let input = document.getElementById('msginput');
+        let user = prompt("What nickname would you like? ")
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('message', { content: input.value, author: { nickname: user } });
+
+                let element = document.createElement("div")
+                element.className = 'message'
+                element.innerHTML = `${user} said: ${input.value}`
+                messages.appendChild(element)
+                input.value = '';
+            }
+        })
+
+    </script>
+</body>
+
 </html>

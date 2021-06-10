@@ -13,25 +13,24 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server)
 
-app.get('/', (req, res) => {
+app.get('/client', (req, res) => {
   res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
-io.on('connection', (socket) => {
-  socket.broadcast.emit('Welcome to the server!')
 
-  console.log(chalk.blue('Derova-Server | ') + chalk.green('A user connected'))
-  
+io.on('connection', (socket) => {
+  console.log(chalk.blue('Derrova-Server | ') + chalk.green('A user connected'))
+  socket.on("message", (a) => {
+    io.emit("message", a)
+  })
+
   socket.on('disconnect', () => {
     console.log(chalk.blue('Derrova-Server | ') + chalk.green('A user disconnected'));
   });
-
-  socket.on('chat message', (msg) => {
-    console.log(chalk.blue('Derrova-Server | Message: ') + msg)
-    io.emit('message', msg)
-  })
 })
 
-server.listen(3000, () => {
-  console.log(chalk.blue('Derrova-Server | ') + chalk.green('Listening on *:3000'));
+server.listen(process.env.PORT || 6969, function() {
+  var host = server.address().address
+  var port = server.address().port
+  console.log(chalk.blue('Derrova-Server | ') + chalk.green(`Listening at *:${port}`))
 });
